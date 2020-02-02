@@ -1,0 +1,20 @@
+[
+  {
+    "name": "nickcdp10",
+    "discoveryType": "CDP",
+    "ipAddressList": "10.10.20.80",
+    "cdpLevel": 1,
+    "timeOut": 1,
+    "isAutoCdp": true,
+    "protocolOrder": "ssh",
+    "preferredMgmtIPMethod": "None"
+  },
+  {
+    "name": "nickrange10",
+    "discoveryType": "Range",
+    "ipAddressList": "10.10.20.80-10.10.20.85",
+    "timeOut": 1,
+    "protocolOrder": "ssh,telnet",
+    "preferredMgmtIPMethod": "None"
+  }
+]
