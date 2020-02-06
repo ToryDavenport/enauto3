@@ -61,8 +61,8 @@ def main():
     file_id = json.loads(run_task.json()["response"]["progress"])["fileId"]
     file_resp = dnac.req(f"dna/intent/api/v1/file/{file_id}")
 
-    # Create outputs directory if it doesn't already exist
-    file_dir = "outputs"
+    # Create cmd_outputs directory if it doesn't already exist
+    file_dir = "cmd_outputs"
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
 
