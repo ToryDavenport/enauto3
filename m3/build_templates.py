@@ -18,12 +18,7 @@ def main():
 
     # Create a DNARequester object with our sandbox parameters
     dnac = DNACRequester(
-        host="dnac.njrusmc.net",
-        username="nickrus",
-        password="Cisco123!",
-        verify=False,
-        old_style=True,
-        # host="10.10.20.85", username="admin", password="Cisco1234!", verify=False
+        host="10.10.20.85", username="admin", password="Cisco1234!", verify=False
     )
 
     # Build a new project using a name and description
@@ -45,6 +40,8 @@ def main():
     for template in os.listdir("templates"):
         with open(f"templates/{template}", "r") as handle:
             temp_data = json.load(handle)
+
+        print(f"\nCreating template from file {template}")
         temp_resp = dnac.req(
             f"dna/intent/api/v1/template-programmer/project/{proj_id}/template",
             method="post",
@@ -62,17 +59,16 @@ def main():
 
         # Then, issue the HTTP PUT request to begin the previous without
         # raising an HTTPError if the status code >= 400
-        prev_resp = dnac.req(
+        prev_data = dnac.req(
             "dna/intent/api/v1/template-programmer/template/preview",
             method="put",
             jsonbody=prev_body,
-        )
-        prev_data = prev_resp.json()
+        ).json()
 
         # If any validation errors exist, print them out. These include using
         # the wrong data type, omitted required variables, wrong template IDs,
         # and more
-        print(f"\nChecking template {template}:")
+        print(f"Checking template {template}:")
         if prev_data["validationErrors"]:
             print(f"Errors:")
             for error in prev_data["validationErrors"]:
@@ -88,12 +84,13 @@ def main():
             version_and_deploy(dnac, temp_data, temp_id)
 
 
-def version_and_deploy(dnac, temp_data, temp_id, ip_addr="100.118.1.69"):
+def version_and_deploy(dnac, temp_data, temp_id, ip_addr="10.10.20.81"):
     """
     Helper function to version and deploy the templates as they are rendered.
     This should only be called when the template renders successfully (ie,
     without errors). This issues the "version" and "deploy" API calls to
-    a sample IP address specified.
+    a sample IP address specified. If ip_addr is not specified, it defaults
+    to leaf1 in the DevNet DNA Center reservable sandbox (this may change).
     """
 
     # Version (commit) template. You must do this before trying to deploy
