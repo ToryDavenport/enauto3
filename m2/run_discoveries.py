@@ -30,13 +30,16 @@ def main():
     cred_types = ["CLI", "SNMPV2_READ_COMMUNITY", "SNMPV2_WRITE_COMMUNITY"]
     for cred in cred_types:
         cred_resp = dnac.req(
-            "dna/intent/api/v1/global-credential", params={"credentialSubType": cred}
+            "dna/intent/api/v1/global-credential",
+            params={"credentialSubType": cred},
         )
 
         # Note: The reservable sandbox has exactly one of each type, so we can
         # safely index the first element. You may want to be more specific in
         # searching for credentials in your environment.
-        cred_list.append(cred_resp.json()["response"][0]["id"])
+        cred_id = cred_resp.json()["response"][0]["id"]
+        cred_list.append(cred_id)
+        print(f"Collected {cred} credential with ID {cred_id}")
 
     # Load in a list of dictionaries containing the discovery parameters.
     # DNAC appears to only run one discovery at a time, so concurrency
@@ -91,7 +94,7 @@ def run_discovery(dnac, disc_body, timeout=600):
         raise TimeoutError("Discovery did not complete in time")
 
     # Discovery succeeded; build the directories needed
-    file_dir = f"data_ref/{disc_id}"
+    file_dir = f"disc_output/{disc_id}"
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
 
@@ -107,8 +110,12 @@ def run_discovery(dnac, disc_body, timeout=600):
 
             # ... and they are already in the system as managed devices,
             # collect extra details, and write it to disk
-            if dev["inventoryCollectionStatus"].lower() == "managed":
-                get_dev = dnac.req(f"dna/intent/api/v1/network-device/{dev['id']}")
+            if dev["inventoryReachabilityStatus"].lower() == "reachable":
+                get_dev = dnac.req(
+                    f"dna/intent/api/v1/network-device/{dev['id']}"
+                )
+
+                # Create a top-level dict with "discovery" and "device" keys
                 output = {"discovery": dev, "device": get_dev.json()["response"]}
                 with open(f"{file_dir}/{dev['hostname']}.json", "w") as handle:
                     json.dump(output, handle, indent=2)

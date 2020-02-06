@@ -25,6 +25,7 @@ def main():
         verify=False,
     )
 
+    # Create output directory for health reports
     health_dir = "outputs"
     if not os.path.exists(health_dir):
         os.makedirs(health_dir)
