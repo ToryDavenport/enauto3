@@ -46,7 +46,15 @@ class DNACRequester:
         auth_resp.raise_for_status()
         self.headers["X-Auth-Token"] = auth_resp.json()["Token"]
 
-    def req(self, resource, method="get", auth=None, jsonbody=None, params=None, raise_for_status=True):
+    def req(
+        self,
+        resource,
+        method="get",
+        auth=None,
+        jsonbody=None,
+        params=None,
+        raise_for_status=True,
+    ):
         """
         Issues a generic request. Basically, a wrapper for "requests" using
         the already-stored host, headers, and verify parameters.

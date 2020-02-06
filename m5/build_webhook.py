@@ -17,11 +17,7 @@ def main():
 
     # Create a DNARequester object with our sandbox parameters
     dnac = DNACRequester(
-        host="dnac.aws.labrats.se",
-        username="nickrus",
-        password="Cisco123!",
-        verify=False,
-        old_style=True,
+        host="10.10.20.85", username="admin", password="Cisco1234!", verify=False
     )
 
     # Collect a list of all assurance-related events, allowing event-driven
@@ -35,7 +31,7 @@ def main():
     event_ids = [event["eventId"] for event in events.json()]
     body = [
         {
-            "name": "njr-assurance",
+            "name": "globo_assurance",
             "subscriptionEndpoints": [
                 {
                     "subscriptionDetails": {
@@ -43,18 +39,18 @@ def main():
                         "name": "webhook.site",
                         "description": "Great for testing",
                         "method": "POST",
-                        "url": "https://webhook.site/885c4fbb-eda9-4d60-a2fb-010d2bde776f"
+                        "url": "https://webhook.site/67355389-9b69-42db-94cb-9c3ed5137a5a",
                     }
                 }
             ],
-            "filter": {
-                "eventIds": event_ids,
-            }
+            "filter": {"eventIds": event_ids},
         }
     ]
 
     # Create the new webhook
-    add_resp = dnac.req(f"dna/intent/api/v1/event/subscription", method="post", jsonbody=body)
+    add_resp = dnac.req(
+        f"dna/intent/api/v1/event/subscription", method="post", jsonbody=body
+    )
 
     # Debugging statement to see add response
     # import json; print(json.dumps(add_resp.json(), indent=2))
@@ -90,7 +86,9 @@ def main():
 
     # Print simple confirmation message with subscription ID, which is
     # necessary for future deletion
-    print(f"Confirmed {my_sub['name']} configured with ID {my_sub['subscriptionId']}")
+    print(
+        f"Confirmed {my_sub['name']} configured with ID {my_sub['subscriptionId']}"
+    )
 
 
 if __name__ == "__main__":
