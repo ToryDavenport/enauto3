@@ -79,11 +79,17 @@ def run_discovery(dnac, disc_body, timeout=600):
     # status should be printed out
     success = False
     for i in range(timeout // 10):
+
+        # Get discovery by ID to see if it has completed
         get_disc = dnac.req(f"dna/intent/api/v1/discovery/{disc_id}")
         data = get_disc.json()["response"]
+
+        # If not complete, print the current condition and wait 10 seconds
         if data["discoveryCondition"].lower() != "complete":
             print(f"Discovery {disc_id} {data['discoveryCondition']} {i}")
             time.sleep(10)
+
+        # Else discovery is complete, print number of devices found and exit loop
         else:
             print(f"Discovery {disc_id} found {data['numDevices']} devices")
             success = True
@@ -101,7 +107,7 @@ def run_discovery(dnac, disc_body, timeout=600):
     # Get a list of discovered devices and their statuses
     dev_sum = dnac.req(f"dna/intent/api/v1/discovery/{disc_id}/network-device")
 
-    # Iterate over the discovered device list.
+    # Iterate over the discovered device list
     for dev in dev_sum.json()["response"]:
 
         # If devices were reachable via CLI or SNMPv2 ...
@@ -120,10 +126,11 @@ def run_discovery(dnac, disc_body, timeout=600):
                 with open(f"{file_dir}/{dev['hostname']}.json", "w") as handle:
                     json.dump(output, handle, indent=2)
 
-        # Else, discovery failed, so print the IP address and reason
+        # Else, discovery failed, so print the device IP address and reason
         else:
             print(
-                f"{dev['managementIpAddress']} failed: {dev['reachabilityFailureReason']}"
+                f"Device {dev['managementIpAddress']} "
+                f"failed: {dev['reachabilityFailureReason']}"
             )
 
 

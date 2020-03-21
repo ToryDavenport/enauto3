@@ -32,16 +32,20 @@ def main():
     # Only connect to valid devices (those without errors)
     device_uuids = []
     for dev in devices.json()["response"]:
+        # If errorCode is false-y, that means no error, so add the device
         if not dev["errorCode"]:
             print(f"Adding {dev['hostname']}: {dev['instanceUuid']}")
             device_uuids.append(dev["instanceUuid"])
+
+        # Else an error occurred, so don't add the device (do nothing)
         else:
             print(f"Ignoring {dev['hostname']}: {dev['errorCode']}")
 
     # Build the HTTP body which tells DNAC which commands to run
     # on which devices (identified by UUID)
-    # 'commands' maximum is 5
-    # 'device_uuids' maximum is 20
+    # Size limits at the time of this recording:
+    #   'commands' length maximum is 5
+    #   'device_uuids' length maximum is 20
     command_body = {
         "commands": ["show inventory", "show version", "show badstuff"],
         "deviceUuids": device_uuids,

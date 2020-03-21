@@ -30,7 +30,9 @@ def main():
     }
 
     # Issue the HTTP POST request to begin the path trace
-    path = dnac.req("dna/intent/api/v1/flow-analysis", method="post", jsonbody=body)
+    path = dnac.req(
+        "dna/intent/api/v1/flow-analysis", method="post", jsonbody=body
+    )
 
     # Optionally print out the JSON dump of the path response
     # print(json.dumps(path.json(), indent=2))

@@ -24,7 +24,7 @@ def main():
     # Build a new project using a name and description
     proj_body = {
         "name": "globo_proj",
-        "description": "testing some python scripts",
+        "description": "globomantics config templates",
     }
     proj_resp = dnac.req(
         f"dna/intent/api/v1/template-programmer/project",
@@ -41,6 +41,8 @@ def main():
         with open(f"templates/{template}", "r") as handle:
             temp_data = json.load(handle)
 
+        # Issue POST request to build a template into existing project
+        # using template data just loaded from JSON file
         print(f"\nCreating template from file {template}")
         temp_resp = dnac.req(
             f"dna/intent/api/v1/template-programmer/project/{proj_id}/template",
@@ -65,9 +67,8 @@ def main():
             jsonbody=prev_body,
         ).json()
 
-        # If any validation errors exist, print them out. These include using
-        # the wrong data type, omitted required variables, wrong template IDs,
-        # and more
+        # If any validation errors exist, print them out. These include using the
+        # wrong data type, omitted required variables, wrong template IDs, etc
         print(f"Checking template {template}:")
         if prev_data["validationErrors"]:
             print(f"Errors:")

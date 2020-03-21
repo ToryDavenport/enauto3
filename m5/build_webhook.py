@@ -27,7 +27,8 @@ def main():
     # Debugging statement to see event list structure
     # import json; print(json.dumps(events.json(), indent=2))
 
-    # Build a list of event IDs to pass into the webhook request body
+    # Build a list of event IDs to pass into the webhook request body.
+    # Could use a JSON file, but showing a more direct approach for diversity
     event_ids = [event["eventId"] for event in events.json()]
     body = [
         {
@@ -87,7 +88,7 @@ def main():
     # Print simple confirmation message with subscription ID, which is
     # necessary for future deletion
     print(
-        f"Confirmed {my_sub['name']} configured with ID {my_sub['subscriptionId']}"
+        f"Confirmed {my_sub['name']} using ID {my_sub['subscriptionId']}"
     )
 
 
