@@ -33,10 +33,15 @@ def main():
         name = f"{site['parentName']}/{site['name']}"
         print(f"Adding {body_type} object {name}")
 
-        # Create the site object and wait for it to finish being created
+        # Issue an HTTP POST request to create the site object
         add_resp = dnac.req(
             "dna/intent/api/v1/site", method="post", jsonbody=data
         )
+
+        # Debugging statement to ensure sites were added
+        # print(json.dumps(add_resp.json(), indent=2))
+
+        # Extract the executionStatusUrl and wait for it to finish being created
         status_url = add_resp.json()["executionStatusUrl"]
         status_resp = wait_for_site_creation(dnac, status_url[1:])
 
