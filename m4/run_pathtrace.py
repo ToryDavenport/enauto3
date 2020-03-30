@@ -55,7 +55,7 @@ def main():
     # the two IP addresses specified (see data_ref/ for screenshot from GUI)
     flow_data = flow_resp.json()["response"]
     print(
-        f"Path trace {flow_data['request']['sourceIP']}-> "
+        f"Path trace {flow_data['request']['sourceIP']} -> "
         f"{flow_data['request']['destIP']}"
     )
     for i, hop in enumerate(flow_data["networkElementsInfo"]):

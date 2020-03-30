@@ -40,7 +40,7 @@ def main():
                         "name": "webhook.site",
                         "description": "Great for testing",
                         "method": "POST",
-                        "url": "https://webhook.site/67355389-9b69-42db-94cb-9c3ed5137a5a",
+                        "url": "https://webhook.site/0b43c29f-8e0c-4ae4-9b3f-9f1df76dcaf8",
                     }
                 }
             ],
