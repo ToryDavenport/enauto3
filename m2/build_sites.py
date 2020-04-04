@@ -104,7 +104,7 @@ def main():
     # the IP address specified in the POST request
     added_ip = mem_resp.json()["device"][0]["response"][0]["managementIpAddress"]
     if new_ip != added_ip:
-        raise ValueError("IP addresses don't match: {new_ip} != {added_ip}")
+        raise ValueError(f"IP addresses don't match: {new_ip} != {added_ip}")
 
     # Print final status message
     print(f"Assigned device to floor {floor_id} with IP address {new_ip}")
