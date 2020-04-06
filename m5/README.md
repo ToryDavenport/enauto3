@@ -1,4 +1,4 @@
-# Monitoring Network Health and Behavior
+# Monitoring Network Health and System Events with DNA Assurance
 This directory contains the files needed to monitor DNA center
 using health checking and event notifications (webhooks).
 

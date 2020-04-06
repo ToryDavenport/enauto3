@@ -1,4 +1,4 @@
-# Managing Device Configurations
+# Managing Device Configurations Using DNA Center Templates
 This directory contains the files needed to update device
 configs using VTL templates. Use this Docker container to learn VTL
 offline (without DNA center): `https://github.com/nickrusso42518/vtlcli-docker`
